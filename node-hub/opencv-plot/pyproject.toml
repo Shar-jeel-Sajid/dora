@@ -8,8 +8,6 @@ authors = [
 description = "Dora Node for plotting text and bbox on image with OpenCV"
 readme = "README.md"
 
-packages = [{ include = "opencv_plot" }]
-
 [tool.poetry.dependencies]
 dora-rs = "^0.3.6"
 numpy = "< 2.0.0"
@@ -18,6 +16,7 @@ python = "^3.7"
 
 [tool.poetry.scripts]
 opencv-plot = "opencv_plot.main:main"
+opencv-plot-test = "opencv_plot.tests.test_opencv_plot:main"
 
 [build-system]
 requires = ["poetry-core>=1.8.0"]

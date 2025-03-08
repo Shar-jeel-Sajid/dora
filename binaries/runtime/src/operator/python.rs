@@ -76,7 +76,7 @@ pub fn run(
                 .to_str()
                 .ok_or_else(|| eyre!("module path is not valid utf8"))?;
             let sys = py
-                .import_bound("sys")
+                .import("sys")
                 .wrap_err("failed to import `sys` module")?;
             let sys_path = sys
                 .getattr("path")
@@ -89,7 +89,7 @@ pub fn run(
                 .wrap_err("failed to append module path to python search path")?;
         }
 
-        let module = py.import_bound(module_name).map_err(traceback)?;
+        let module = py.import(module_name).map_err(traceback)?;
         let operator_class = module
             .getattr("Operator")
             .wrap_err("no `Operator` class found in module")?;
@@ -141,11 +141,11 @@ pub fn run(
                         })?;
                     // Reload module
                     let module = py
-                        .import_bound(module_name)
+                        .import(module_name)
                         .map_err(traceback)
                         .wrap_err(format!("Could not retrieve {module_name} while reloading"))?;
                     let importlib = py
-                        .import_bound("importlib")
+                        .import("importlib")
                         .wrap_err("failed to import `importlib` module")?;
                     let module = importlib
                         .call_method("reload", (module,), None)

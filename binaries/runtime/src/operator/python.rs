@@ -75,9 +75,7 @@ pub fn run(
             let parent_path = parent_path
                 .to_str()
                 .ok_or_else(|| eyre!("module path is not valid utf8"))?;
-            let sys = py
-                .import("sys")
-                .wrap_err("failed to import `sys` module")?;
+            let sys = py.import("sys").wrap_err("failed to import `sys` module")?;
             let sys_path = sys
                 .getattr("path")
                 .wrap_err("failed to import `sys.path` module")?;

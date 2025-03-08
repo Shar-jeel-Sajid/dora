@@ -26,6 +26,7 @@ const DUMMY_STRUCT_NAME: &str = "struct";
 #[cfg(test)]
 mod tests {
     use std::path::PathBuf;
+    use std::ffi::CString;
 
     use crate::typed::deserialize::StructDeserializer;
     use crate::typed::serialize;
@@ -65,9 +66,9 @@ mod tests {
             let path = PathBuf::from(env!("CARGO_MANIFEST_DIR")); //.join("test_utils.py"); // Adjust this path as needed
 
             // Add the Python module's directory to sys.path
-            py.run_bound(
-                "import sys; sys.path.append(str(path))",
-                Some(&[("path", path)].into_py_dict_bound(py)),
+            py.run(
+                CString::new("import sys; sys.path.append(str(path))").unwrap().as_c_str(),
+                Some(&[("path", path)].into_py_dict(py).unwrap()),
                 None,
             )?;
 
@@ -116,8 +117,8 @@ mod tests {
                 context.set_item("out_pyarrow", out_pyarrow)?;
 
                 let _ = py
-                    .eval_bound(
-                        "test_utils.is_subset(in_pyarrow, out_pyarrow)",
+                    .eval(
+                        CString::new("test_utils.is_subset(in_pyarrow, out_pyarrow)").unwrap().as_c_str(),
                         Some(&context),
                         None,
                     )

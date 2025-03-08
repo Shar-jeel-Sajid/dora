@@ -230,9 +230,7 @@ pub fn lib_main() -> Result<()> {
                     if dof < positions.len() {
                         positions.truncate(dof);
                     } else {
-                        for _ in 0..(dof - positions.len()) {
-                            positions.push(0.);
-                        }
+                        positions.resize(dof, 0.);
                     }
 
                     update_visualization(&rec, chain, &id, &positions)?;

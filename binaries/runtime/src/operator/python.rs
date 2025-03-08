@@ -154,7 +154,9 @@ pub fn run(
                         .wrap_err("no `Operator` class found in module")?;
 
                     // Create a new reloaded operator
-                    let locals = [("Operator", reloaded_operator_class)].into_py_dict_bound(py);
+                    let locals = [("Operator", reloaded_operator_class)]
+                        .into_py_dict(py)
+                        .unwrap();
                     let operator: Py<pyo3::PyAny> = py
                         .eval(&CString::new("Operator()").unwrap(), None, Some(&locals))
                         .map_err(traceback)
